@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"janvysun.github.io","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Redis 是一个高性能的 key-value 数据库，属于 NoSQL 类型的数据库。本文介绍其基本使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis 的基本使用">
+<meta property="og:url" content="https://janvysun.github.io/redis/e751063c-d6cf-4faf-8ef7-85598d272c31.html">
+<meta property="og:site_name" content="Janvy 的个人博客">
+<meta property="og:description" content="Redis 是一个高性能的 key-value 数据库，属于 NoSQL 类型的数据库。本文介绍其基本使用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-23T06:23:32.000Z">
+<meta property="article:modified_time" content="2021-06-30T13:03:57.585Z">
+<meta property="article:author" content="Janvy Sun">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://janvysun.github.io/redis/e751063c-d6cf-4faf-8ef7-85598d272c31.html">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Redis 的基本使用 | Janvy 的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Janvy 的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Janvy 的个人博客</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-特性"><span class="nav-number">1.</span> <span class="nav-text">Redis 特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">3.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定-ip"><span class="nav-number">3.1.</span> <span class="nav-text">绑定 ip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#端⼝"><span class="nav-number">3.2.</span> <span class="nav-text">端⼝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#守护进程"><span class="nav-number">3.3.</span> <span class="nav-text">守护进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据⽂件"><span class="nav-number">3.4.</span> <span class="nav-text">数据⽂件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据⽂件存储路径"><span class="nav-number">3.5.</span> <span class="nav-text">数据⽂件存储路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#⽇志⽂件"><span class="nav-number">3.6.</span> <span class="nav-text">⽇志⽂件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库"><span class="nav-number">3.7.</span> <span class="nav-text">数据库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动"><span class="nav-number">4.</span> <span class="nav-text">启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#服务器端"><span class="nav-number">4.1.</span> <span class="nav-text">服务器端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端"><span class="nav-number">4.2.</span> <span class="nav-text">客户端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#键命令"><span class="nav-number">5.</span> <span class="nav-text">键命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查找键"><span class="nav-number">5.1.</span> <span class="nav-text">查找键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断键是否存在"><span class="nav-number">5.2.</span> <span class="nav-text">判断键是否存在</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看键对应的的类型"><span class="nav-number">5.3.</span> <span class="nav-text">查看键对应的的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除键及对应的值"><span class="nav-number">5.4.</span> <span class="nav-text">删除键及对应的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置过期时间"><span class="nav-number">5.5.</span> <span class="nav-text">设置过期时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看有效时间"><span class="nav-number">5.6.</span> <span class="nav-text">查看有效时间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#string"><span class="nav-number">6.</span> <span class="nav-text">string</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#set"><span class="nav-number">6.1.</span> <span class="nav-text">set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setex"><span class="nav-number">6.2.</span> <span class="nav-text">setex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mset"><span class="nav-number">6.3.</span> <span class="nav-text">mset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#append"><span class="nav-number">6.4.</span> <span class="nav-text">append</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#get"><span class="nav-number">6.5.</span> <span class="nav-text">get</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mget"><span class="nav-number">6.6.</span> <span class="nav-text">mget</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hash"><span class="nav-number">7.</span> <span class="nav-text">hash</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hset"><span class="nav-number">7.1.</span> <span class="nav-text">hset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hmset"><span class="nav-number">7.2.</span> <span class="nav-text">hmset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hkeys"><span class="nav-number">7.3.</span> <span class="nav-text">hkeys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hget"><span class="nav-number">7.4.</span> <span class="nav-text">hget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hmget"><span class="nav-number">7.5.</span> <span class="nav-text">hmget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hvals"><span class="nav-number">7.6.</span> <span class="nav-text">hvals</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hdel"><span class="nav-number">7.7.</span> <span class="nav-text">hdel</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#list"><span class="nav-number">8.</span> <span class="nav-text">list</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lpush"><span class="nav-number">8.1.</span> <span class="nav-text">lpush</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rpush"><span class="nav-number">8.2.</span> <span class="nav-text">rpush</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linsert"><span class="nav-number">8.3.</span> <span class="nav-text">linsert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lrange"><span class="nav-number">8.4.</span> <span class="nav-text">lrange</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lset"><span class="nav-number">8.5.</span> <span class="nav-text">lset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lrem"><span class="nav-number">8.6.</span> <span class="nav-text">lrem</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#set-1"><span class="nav-number">9.</span> <span class="nav-text">set</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sadd"><span class="nav-number">9.1.</span> <span class="nav-text">sadd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#smembers"><span class="nav-number">9.2.</span> <span class="nav-text">smembers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#srem"><span class="nav-number">9.3.</span> <span class="nav-text">srem</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zset"><span class="nav-number">10.</span> <span class="nav-text">zset</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#zadd"><span class="nav-number">10.1.</span> <span class="nav-text">zadd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zrange"><span class="nav-number">10.2.</span> <span class="nav-text">zrange</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zrangebyscore"><span class="nav-number">10.3.</span> <span class="nav-text">zrangebyscore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zscore"><span class="nav-number">10.4.</span> <span class="nav-text">zscore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zrem"><span class="nav-number">10.5.</span> <span class="nav-text">zrem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zremrangebyscore"><span class="nav-number">10.6.</span> <span class="nav-text">zremrangebyscore</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Janvy Sun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Janvy Sun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/janvysun" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;janvysun" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:janvysun@gmail.com" title="E-Mail → mailto:janvysun@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://janvysun.github.io/redis/e751063c-d6cf-4faf-8ef7-85598d272c31.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Janvy Sun">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Janvy 的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis 的基本使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-23 14:23:32" itemprop="dateCreated datePublished" datetime="2020-04-23T14:23:32+08:00">2020-04-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-30 21:03:57" itemprop="dateModified" datetime="2021-06-30T21:03:57+08:00">2021-06-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">Database</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Redis 是一个高性能的 key-value 数据库，属于 NoSQL 类型的数据库。本文介绍其基本使用。</p><a id="more"></a><h2 id="Redis-特性"><a href="#Redis-特性" class="headerlink" title="Redis 特性"></a>Redis 特性</h2><p>Redis 与其他 key - value 缓存产品有以下三个特点：</p><ul><li>Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。</li><li>Redis不仅仅支持简单的key-value类型的数据，同时还提供list，set，zset，hash等数据结构的存储。</li><li>Redis支持数据的备份，即master-slave模式的数据备份。</li></ul><p>Redis <strong>优势</strong>：</p><ul><li>性能极高: Redis能读的速度是110000次/s,写的速度是81000次/s 。</li><li>丰富的数据类型: Redis支持二进制案例的 Strings, Lists, Hashes, Sets 及 Ordered Sets 数据类型操作。</li><li>原子: Redis的所有操作都是原子性的，同时Redis还支持对几个操作全并后的原子性执行。</li><li>丰富的特性: Redis还支持 publish/subscribe, 通知, key 过期等等特性。</li></ul><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>Redis 的安装非常方便，只需要在 <a href="http://download.redis.io/releases/" target="_blank" rel="noopener"><strong>官网</strong></a> 下载压缩包解压然后 make 即可。</p><ul><li><p>step1:下载之后解压<br><code>tar -zxvf redis-3.2.8.tar.gz</code></p></li><li><p>step2:进⼊⽬录<br>直接使用 <code>make</code> 命令进行编译<br>然后使用 <code>make test</code> 命令进行测试 (需要的时间可能比较长)<br>最后使用 <code>make install</code> 命令进行安装 (会安装到/usr/local/bin目录下)</p></li><li><p>step3:安装完成后，我们进入目录 /usr/local/bin 中查看<br>cd /usr/local/bin<br>ls -alh redis*</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-rwxr-xr-x 1 root root 4.2M Mar 31 01:08 redis-benchmark</span><br><span class="line">-rwxr-xr-x 1 root root 7.8M Mar 31 01:08 redis-check-aof</span><br><span class="line">-rwxr-xr-x 1 root root 7.8M Mar 31 01:08 redis-check-rdb</span><br><span class="line">-rwxr-xr-x 1 root root 4.6M Mar 31 01:08 redis-cli</span><br><span class="line">lrwxrwxrwx 1 root root   12 Mar 31 01:08 redis-sentinel -&gt; redis-server</span><br><span class="line">-rwxr-xr-x 1 root root 7.8M Mar 31 01:08 redis-server</span><br></pre></td></tr></table></figure><p>其中：<br>redis-server:redis服务器<br>redis-cli:redis命令行客户端<br>redis-benchmark:redis性能测试工具<br>redis-check-aof:AOF文件修复工具<br>redis-check-rdb:RDB文件检索工具</p></li><li><p>step4:配置⽂件，移动到/etc/⽬录下<br>配置⽂件⽬录为解压文件中的 redis.conf 文件，将其移动至/etc/redis中</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp redis.conf &#x2F;etc&#x2F;redis&#x2F;</span><br></pre></td></tr></table></figure></li></ul><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>Redis 的配置文件在 /etc/redis/redis.conf 下</p><h3 id="绑定-ip"><a href="#绑定-ip" class="headerlink" title="绑定 ip"></a>绑定 ip</h3><p>如果需要远程访问，可将此⾏注释，或绑定⼀个真实 ip</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bind 127.0.0.1</span><br></pre></td></tr></table></figure><h3 id="端⼝"><a href="#端⼝" class="headerlink" title="端⼝"></a>端⼝</h3><p>端口默认为 6379</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">port 6379</span><br></pre></td></tr></table></figure><h3 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h3><p>如果以守护进程运⾏，则不会在命令⾏阻塞，类似于服务。如果以⾮守护进程运⾏，则当前终端被阻塞。</p><p>设置为 yes 表示守护进程，设置为 no 表示⾮守护进程</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">daemonize yes</span><br></pre></td></tr></table></figure><h3 id="数据⽂件"><a href="#数据⽂件" class="headerlink" title="数据⽂件"></a>数据⽂件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dbfilename dump.rdb</span><br></pre></td></tr></table></figure><h3 id="数据⽂件存储路径"><a href="#数据⽂件存储路径" class="headerlink" title="数据⽂件存储路径"></a>数据⽂件存储路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dir &#x2F;var&#x2F;lib&#x2F;redis</span><br></pre></td></tr></table></figure><h3 id="⽇志⽂件"><a href="#⽇志⽂件" class="headerlink" title="⽇志⽂件"></a>⽇志⽂件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logfile &#x2F;var&#x2F;log&#x2F;redis&#x2F;redis-server.log</span><br></pre></td></tr></table></figure><h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>默认有 16 个数据库</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">database 16</span><br></pre></td></tr></table></figure><h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><h3 id="服务器端"><a href="#服务器端" class="headerlink" title="服务器端"></a>服务器端</h3><p>如果是通过包管理安装的话，可以使用<code>service redis start</code>进行启动。如果是通过源代码编译安装的话，则需要使用<code>redis-server</code>命令启动。</p><p>可以使⽤help查看帮助⽂档:<code>redis-server --help</code></p><p>启动命令：<code>redis-server /etc/redis/redis.conf</code></p><p>一般使用这条命令进行启动，可以指定加载的配置文件</p><p>如果要结束这个进程的时候，需要使用<code>kill</code>命令来结束进程:</p><ul><li><code>ps -ef|grep redis</code>：查看 redis 服务器进程 pid</li><li><code>kill -9 pid</code>：杀死 redis 服务器进程</li></ul><h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><p>客户端的命令为<code>redis-cli</code></p><p>可以使⽤help查看帮助⽂档:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli --help</span><br></pre></td></tr></table></figure><p>如果连接本地redis，直接使用<code>redis-cli</code>命令即可</p><p>连接成功后如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@Linux ~# redis-cli </span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure><p>可以使用<code>ping</code>命令来测试连接：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br></pre></td></tr></table></figure><p>redis默认有16个数据库，连接的时候是连接第一个数据库，可以使用<code>select</code>命令来切换数据库。如：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; SELECT 10</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379[10]&gt;</span><br></pre></td></tr></table></figure><h2 id="键命令"><a href="#键命令" class="headerlink" title="键命令"></a>键命令</h2><h3 id="查找键"><a href="#查找键" class="headerlink" title="查找键"></a>查找键</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keys pattern</span><br></pre></td></tr></table></figure><p>查找键的参数⽀持正则表达式</p><ul><li>查看所有键：<code>keys *</code></li><li>查看名称中包含 a 的键：<code>keys &#39;a*&#39;</code></li></ul><h3 id="判断键是否存在"><a href="#判断键是否存在" class="headerlink" title="判断键是否存在"></a>判断键是否存在</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exists key [key ...]</span><br></pre></td></tr></table></figure><p>如果存在返回1，不存在返回0</p><ul><li>判断键 a1 是否存在：<code>exists a1</code></li></ul><h3 id="查看键对应的的类型"><a href="#查看键对应的的类型" class="headerlink" title="查看键对应的的类型"></a>查看键对应的的类型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type key</span><br></pre></td></tr></table></figure><ul><li>查看键 a1 的值类型，为 redis ⽀持的五种类型中的⼀种：<code>type a1</code></li></ul><h3 id="删除键及对应的值"><a href="#删除键及对应的值" class="headerlink" title="删除键及对应的值"></a>删除键及对应的值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">del key [key ...]</span><br></pre></td></tr></table></figure><ul><li>删除键 a2、a3：<code>del a2 a3</code></li></ul><h3 id="设置过期时间"><a href="#设置过期时间" class="headerlink" title="设置过期时间"></a>设置过期时间</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expire key [seconds]</span><br></pre></td></tr></table></figure><p>以秒为单位，如果没有指定过期时间则⼀直存在，直到使⽤ DEL 移除</p><ul><li>设置键 ‘a1’ 的过期时间为3秒：<code>expire &#39;a1&#39; 3</code></li></ul><h3 id="查看有效时间"><a href="#查看有效时间" class="headerlink" title="查看有效时间"></a>查看有效时间</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ttl key</span><br></pre></td></tr></table></figure><p>以秒为单位</p><ul><li>查看键 ‘bb’ 的有效时间：<code>ttl bb</code></li></ul><h2 id="string"><a href="#string" class="headerlink" title="string"></a>string</h2><p>字符串类型是 Redis 中<strong>最为基础的数据存储类型</strong>。它在 Redis 中是二进制安全的，这便意味着该类型可以接受任何格式的数据，如 JPEG 图像数据或 Json 对象描述信息等。在 Redis 中 string 类型的 Value 最多可以容纳的数据长度是 512M。</p><h3 id="set"><a href="#set" class="headerlink" title="set"></a>set</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set key value</span><br></pre></td></tr></table></figure><p>如果设置的键不存在则为添加，如果设置的键已经存在则修改</p><ul><li>设置键为 name 值为 abc 的数据：<code>set name abc</code></li></ul><h3 id="setex"><a href="#setex" class="headerlink" title="setex"></a>setex</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setex key seconds value</span><br></pre></td></tr></table></figure><p>设置键值及过期时间，以秒为单位</p><ul><li>设置键为 aa 值为 aa 过期时间为 3 秒的数据：<code>setex aa 3 aa</code></li></ul><h3 id="mset"><a href="#mset" class="headerlink" title="mset"></a>mset</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mset key value [key value ...]</span><br></pre></td></tr></table></figure><p>设置多个键值</p><ul><li>设置键为 ‘a1’ 值为 ‘python’、键为 ‘a2’ 值为 ‘java’、键为 ‘a3’ 值为 ‘c’：<code>mset a1 python a2 java a3 c</code></li></ul><h3 id="append"><a href="#append" class="headerlink" title="append"></a>append</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">append key value</span><br></pre></td></tr></table></figure><p>追加值</p><ul><li>向键为 a1 中追加值 ‘haha’：<code>append &#39;a1&#39; &#39;haha&#39;</code></li></ul><h3 id="get"><a href="#get" class="headerlink" title="get"></a>get</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get key</span><br></pre></td></tr></table></figure><p>获取：根据键获取值，如果不存在此键则返回nil</p><ul><li>获取键 ‘name’ 的值：<code>get &#39;name&#39;</code></li></ul><h3 id="mget"><a href="#mget" class="headerlink" title="mget"></a>mget</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mget key [key ...]</span><br></pre></td></tr></table></figure><p>根据多个键获取多个值</p><ul><li>获取键 a1、a2、a3 的值：<code>mget a1 a2 a3</code></li></ul><h2 id="hash"><a href="#hash" class="headerlink" title="hash"></a>hash</h2><p>hash ⽤于存储对象(结构体)，对象的结构为属性、值。值的类型 <strong>只能为string</strong></p><h3 id="hset"><a href="#hset" class="headerlink" title="hset"></a>hset</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hset key field value</span><br></pre></td></tr></table></figure><p>设置单个属性</p><p><strong>注意：</strong><br>如果使用hset命令的时候出现以下错误：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk. Commands that may modify the data set are disabled. Please check Redis logs for details about the error.</span><br></pre></td></tr></table></figure><p>是由于Redis被配置为保存数据库快照，但它目前不能持久化到硬盘。于是用来修改集合数据的命令不能用。原因：强制关闭 Redis 快照导致不能持久化。</p><p>解决方案：运行 <code>config set stop-writes-on-bgsave-error no</code>命令后即可解决该问题。</p><ul><li>设置键 user 的属性 name 为 asdf：<code>hset user name asdf</code></li></ul><h3 id="hmset"><a href="#hmset" class="headerlink" title="hmset"></a>hmset</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hmset key field value [field value ...]</span><br></pre></td></tr></table></figure><p>设置多个属性</p><ul><li>设置键 u2 的属性 name 为 asdf、属性 age 为 11：<code>hmset u2 name asdf age 11</code></li></ul><h3 id="hkeys"><a href="#hkeys" class="headerlink" title="hkeys"></a>hkeys</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hkeys key</span><br></pre></td></tr></table></figure><p>获取指定键所有的属性</p><ul><li>获取键 u2 的所有属性：<code>hkeys u2</code></li></ul><h3 id="hget"><a href="#hget" class="headerlink" title="hget"></a>hget</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hget key field</span><br></pre></td></tr></table></figure><p>获取键属性</p><ul><li>获取键 u2 属性 ‘name’ 的值：<code>hget u2 &#39;name&#39;</code></li></ul><h3 id="hmget"><a href="#hmget" class="headerlink" title="hmget"></a>hmget</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hmget key field [field ...]</span><br></pre></td></tr></table></figure><p>获取多个属性的值</p><ul><li>获取键 u2 属性 ‘name’、’age 的值：<code>hmget u2 name age</code></li></ul><h3 id="hvals"><a href="#hvals" class="headerlink" title="hvals"></a>hvals</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hvals key</span><br></pre></td></tr></table></figure><p>获取所有属性的值</p><ul><li>获取键 ‘u2’ 所有属性的值：<code>hvals u2</code></li></ul><h3 id="hdel"><a href="#hdel" class="headerlink" title="hdel"></a>hdel</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdel key field [field ...]</span><br></pre></td></tr></table></figure><p>删除属性，属性对应的值会被⼀起删除</p><ul><li>删除键 ‘u2’ 的属性 ‘age’：<code>hdel u2 age</code></li></ul><p><strong>如果要删除整个 hash 键及值，使⽤ del 命令</strong></p><h2 id="list"><a href="#list" class="headerlink" title="list"></a>list</h2><p>list类型是一种列表类型，列表的元素类型为 <strong>string</strong></p><h3 id="lpush"><a href="#lpush" class="headerlink" title="lpush"></a>lpush</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lpush key value [value ...]</span><br></pre></td></tr></table></figure><p>在左侧(列表头部)插⼊数据</p><ul><li>从键为 ‘a1’ 的列表左侧加⼊数据 a、 b、c：<code>lpush a1 a b c</code></li></ul><h3 id="rpush"><a href="#rpush" class="headerlink" title="rpush"></a>rpush</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpush key value [value ...]</span><br></pre></td></tr></table></figure><p>在右侧(列表尾部)插⼊数据</p><ul><li>从键为 ‘a1’ 的列表右侧加⼊数据 0、1：<code>rpush a1 0 1</code></li></ul><h3 id="linsert"><a href="#linsert" class="headerlink" title="linsert"></a>linsert</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linsert key BEFORE|AFTER pivot value</span><br></pre></td></tr></table></figure><p>在指定元素的前或后插⼊新元素</p><ul><li>在键为 ‘a1’ 的列表中元素 ‘b’ 前加⼊ ‘3’：<code>linsert a1 before b 3</code></li></ul><h3 id="lrange"><a href="#lrange" class="headerlink" title="lrange"></a>lrange</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lrange key start stop</span><br></pre></td></tr></table></figure><p>返回列表⾥指定范围内的元素，<code>start</code>、<code>stop</code> 为元素的下标索引。索引从左侧开始，第⼀个元素为 0，索引可以是负数，表示从尾部开始计数，<strong>-1表示最后⼀个元素</strong></p><ul><li>获取键为 ‘a1’ 的列表所有元素：<code>lrange a1 0 -1</code></li></ul><h3 id="lset"><a href="#lset" class="headerlink" title="lset"></a>lset</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lset key index value</span><br></pre></td></tr></table></figure><p>设置指定索引位置的元素值</p><ul><li>修改键为 ‘a1’ 的列表中下标为 1 的元素值为 ‘z’：<code>lset a 1 z</code></li></ul><h3 id="lrem"><a href="#lrem" class="headerlink" title="lrem"></a>lrem</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lrem key count value</span><br></pre></td></tr></table></figure><p>删除指定元素。将列表中前 count 次出现的值为 value 的元素移除</p><ul><li>count &gt; 0: 从头往尾移除</li><li>count &lt; 0: 从尾往头移除</li><li>count = 0: 移除所有</li></ul><p>如：</p><ul><li>向列表 ‘a2’ 中加⼊元素 ‘a’、’b’、’a’、’b’、’a’、’b’：<code>lpush a2 a b a b a b</code></li><li>从 ‘a2’ 列表右侧开始删除 2 个 ‘b’：<code>lrem a2 -2 b</code></li><li>查看列表 ‘a2’ 的所有元素：<code>lrange a2 0 -1</code></li></ul><h2 id="set-1"><a href="#set-1" class="headerlink" title="set"></a>set</h2><p>set类型是一种⽆序集合，<strong>元素为string类型</strong>。元素具有唯⼀性，不重复。<strong>注意</strong>：对于集合没有修改操作。</p><h3 id="sadd"><a href="#sadd" class="headerlink" title="sadd"></a>sadd</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sadd key member [member ...]</span><br></pre></td></tr></table></figure><p>添加元素</p><ul><li>向键 ‘a3’ 的集合中添加元素 ‘zhangsan’、’lisi’、’wangwu’：<code>sadd a3 zhangsan sili wangwu</code></li></ul><h3 id="smembers"><a href="#smembers" class="headerlink" title="smembers"></a>smembers</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smembers key</span><br></pre></td></tr></table></figure><p>返回所有的元素</p><ul><li>获取键 ‘a3’ 的集合中所有元素：<code>smembers a3</code></li></ul><h3 id="srem"><a href="#srem" class="headerlink" title="srem"></a>srem</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">srem key</span><br></pre></td></tr></table></figure><p>删除指定元素</p><ul><li>删除键 ‘a3’ 的集合中元素 ‘wangwu’：<code>srem a3 wangwu</code></li></ul><h2 id="zset"><a href="#zset" class="headerlink" title="zset"></a>zset</h2><p>zset类型是一种有序集合，<strong>其元素为 string 类型</strong>，元素具有唯⼀性，不重复。每个元素都会关联⼀个 double 类型的 score，表示权重，通过权重将元素从⼩到⼤排序。</p><p><strong>注意</strong>：没有修改操作</p><h3 id="zadd"><a href="#zadd" class="headerlink" title="zadd"></a>zadd</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zadd key score member [score member ...]</span><br></pre></td></tr></table></figure><p>添加元素</p><ul><li>向键 ‘a4’ 的集合中添加元素 ‘lisi’、’wangwu’、’zhaoliu’、’zhangsan’，权重分别为 4、5、6、3：<code>zadd a4 4 lisi 5 wangwu 6 zhaoliu 3 zhangsan</code></li></ul><h3 id="zrange"><a href="#zrange" class="headerlink" title="zrange"></a>zrange</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zrange key start stop</span><br></pre></td></tr></table></figure><p>返回指定范围内的元素，<code>start</code>、<code>stop</code>为元素的下标索引，索引从左侧开始，第⼀个元素为0。索引可以是负数，表示从尾部开始计数，如 -1 表示最后⼀个元素。</p><ul><li>获取键 ‘a4’ 的集合中所有元素：<code>zrange a4 0 -1</code></li></ul><h3 id="zrangebyscore"><a href="#zrangebyscore" class="headerlink" title="zrangebyscore"></a>zrangebyscore</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zrangebyscore key min max</span><br></pre></td></tr></table></figure><p>返回 score 值在 min 和 max 之间的成员</p><ul><li>获取键 ‘a4’ 的集合中权限值在 5 和 6 之间的成员：<code>zrangebyscore a4 5 6</code></li></ul><h3 id="zscore"><a href="#zscore" class="headerlink" title="zscore"></a>zscore</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zscore key member</span><br></pre></td></tr></table></figure><p>返回成员 member 的 score 值</p><ul><li>获取键 ‘a4’ 的集合中元素 ‘zhangsan’ 的权重：<code>zscore a4 zhangsan</code></li></ul><h3 id="zrem"><a href="#zrem" class="headerlink" title="zrem"></a>zrem</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zrem key member [member ...]</span><br></pre></td></tr></table></figure><p>删除指定元素</p><ul><li>删除集合 ‘a4’ 中元素 ‘zhangsan’：<code>zrem a4 zhangsan</code></li></ul><h3 id="zremrangebyscore"><a href="#zremrangebyscore" class="headerlink" title="zremrangebyscore"></a>zremrangebyscore</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zremrangebyscore key min max</span><br></pre></td></tr></table></figure><p>删除权重在指定范围的元素</p><ul><li>删除集合 ‘a4’ 中权限在 5、6 之间的元素：<code>zremrangebyscore a4 5 6</code></li></ul>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="document.getElementById('post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div id="post-reward">
+      
+      <div>
+        <img src="/images/wechatpay.png" alt="Janvy Sun 微信">
+        <p>微信</p>
+      </div>
+      
+      <div>
+        <img src="/images/alipay.png" alt="Janvy Sun 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Janvy Sun
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://janvysun.github.io/redis/e751063c-d6cf-4faf-8ef7-85598d272c31.html" title="Redis 的基本使用">https://janvysun.github.io/redis/e751063c-d6cf-4faf-8ef7-85598d272c31.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Redis/" rel="tag"><i class="fa fa-tag"></i> Redis</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/other/ea83f4ee-b0ba-4265-a4da-cca39fa63f0a.html" rel="prev" title="设计模式">
+      <i class="fa fa-chevron-left"></i> 设计模式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/sql/4636f9c3-2eb6-489f-8f38-85fe394886ee.html" rel="next" title="常用 SQL">
+      常用 SQL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Janvy Sun</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">370k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">12:51</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

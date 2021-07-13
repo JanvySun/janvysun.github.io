@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"janvysun.github.io","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Vim 是一个类似于 Vi 的著名的功能强大、高度可定制的文本编辑器，在 Vi 的基础上改进和增加了很多特性。Vim普遍被推崇为类Vi编辑器中最好的一个，事实上真正的劲敌来自 Emacs 的不同变体。1999 年 Emacs 被选为 Linuxworld 文本编辑分类的优胜者，Vim 屈居第二。但在 2000 年 2 月 Vim 赢得了 Slashdot Beanie 的最佳开放源代码文本编辑器大">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vim 使用">
+<meta property="og:url" content="https://janvysun.github.io/vim/94767f55-f93e-431b-b35f-0fa56b7a4904.html">
+<meta property="og:site_name" content="Janvy 的个人博客">
+<meta property="og:description" content="Vim 是一个类似于 Vi 的著名的功能强大、高度可定制的文本编辑器，在 Vi 的基础上改进和增加了很多特性。Vim普遍被推崇为类Vi编辑器中最好的一个，事实上真正的劲敌来自 Emacs 的不同变体。1999 年 Emacs 被选为 Linuxworld 文本编辑分类的优胜者，Vim 屈居第二。但在 2000 年 2 月 Vim 赢得了 Slashdot Beanie 的最佳开放源代码文本编辑器大">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-30T01:32:08.000Z">
+<meta property="article:modified_time" content="2021-06-30T13:03:57.901Z">
+<meta property="article:author" content="Janvy Sun">
+<meta property="article:tag" content="Vim">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://janvysun.github.io/vim/94767f55-f93e-431b-b35f-0fa56b7a4904.html">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Vim 使用 | Janvy 的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Janvy 的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Janvy 的个人博客</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#打开文件"><span class="nav-number">1.</span> <span class="nav-text">打开文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#打开多个文件"><span class="nav-number">1.1.</span> <span class="nav-text">打开多个文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分屏打开多个文件"><span class="nav-number">1.2.</span> <span class="nav-text">分屏打开多个文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关闭文件"><span class="nav-number">2.</span> <span class="nav-text">关闭文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编辑模式命令"><span class="nav-number">3.</span> <span class="nav-text">编辑模式命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#移动光标"><span class="nav-number">3.1.</span> <span class="nav-text">移动光标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行内跳转"><span class="nav-number">3.2.</span> <span class="nav-text">行内跳转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行间跳转"><span class="nav-number">3.3.</span> <span class="nav-text">行间跳转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#翻屏"><span class="nav-number">3.4.</span> <span class="nav-text">翻屏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入输入模式"><span class="nav-number">3.5.</span> <span class="nav-text">进入输入模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除"><span class="nav-number">3.6.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制"><span class="nav-number">3.7.</span> <span class="nav-text">复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#粘贴"><span class="nav-number">3.8.</span> <span class="nav-text">粘贴</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#替换"><span class="nav-number">3.9.</span> <span class="nav-text">替换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#撤消编辑操作"><span class="nav-number">3.10.</span> <span class="nav-text">撤消编辑操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重复前一次编辑操作"><span class="nav-number">3.11.</span> <span class="nav-text">重复前一次编辑操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拆分窗口"><span class="nav-number">3.12.</span> <span class="nav-text">拆分窗口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#末行模式"><span class="nav-number">4.</span> <span class="nav-text">末行模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#删除-1"><span class="nav-number">4.1.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除空白行"><span class="nav-number">4.2.</span> <span class="nav-text">删除空白行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找"><span class="nav-number">4.3.</span> <span class="nav-text">查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找并替换"><span class="nav-number">4.4.</span> <span class="nav-text">查找并替换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分组替换"><span class="nav-number">4.4.1.</span> <span class="nav-text">分组替换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分屏"><span class="nav-number">4.5.</span> <span class="nav-text">分屏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#截取文件内容"><span class="nav-number">4.6.</span> <span class="nav-text">截取文件内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#填充文件"><span class="nav-number">4.7.</span> <span class="nav-text">填充文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可视化模式"><span class="nav-number">5.</span> <span class="nav-text">可视化模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#逐行"><span class="nav-number">5.1.</span> <span class="nav-text">逐行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逐列"><span class="nav-number">5.2.</span> <span class="nav-text">逐列</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Janvy Sun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Janvy Sun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/janvysun" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;janvysun" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:janvysun@gmail.com" title="E-Mail → mailto:janvysun@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://janvysun.github.io/vim/94767f55-f93e-431b-b35f-0fa56b7a4904.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Janvy Sun">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Janvy 的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vim 使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-30 09:32:08" itemprop="dateCreated datePublished" datetime="2021-03-30T09:32:08+08:00">2021-03-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-30 21:03:57" itemprop="dateModified" datetime="2021-06-30T21:03:57+08:00">2021-06-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Software/" itemprop="url" rel="index"><span itemprop="name">Software</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Vim 是一个类似于 Vi 的著名的功能强大、高度可定制的文本编辑器，在 Vi 的基础上改进和增加了很多特性。Vim普遍被推崇为类Vi编辑器中最好的一个，事实上真正的劲敌来自 Emacs 的不同变体。1999 年 Emacs 被选为 Linuxworld 文本编辑分类的优胜者，Vim 屈居第二。但在 2000 年 2 月 Vim 赢得了 Slashdot Beanie 的最佳开放源代码文本编辑器大奖，又将 Emacs 推至二线， 总的来看，Vim 和 Emacs 在文本编辑方面都是非常优秀的。本文列出 vim 的一些操作。</p><a id="more"></a><h1 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h1><p>Vim 一共三大模式：<strong>编辑模式(命令模式)</strong>、<strong>输入模式</strong>、<strong>末行模式</strong>。打开文件默认处于编辑模式。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;path&#x2F;to&#x2F;somefile</span><br></pre></td></tr></table></figure><ul><li><code>vim +#</code>：打开文件，并定位于第#行</li><li><code>vim +</code>：打开文件，定位至最后一行</li><li><code>vim +/PATTERN</code>：打开文件，定位至第一次被 PATTERN 匹配到的行的行首</li></ul><h2 id="打开多个文件"><a href="#打开多个文件" class="headerlink" title="打开多个文件"></a>打开多个文件</h2><p><code>vim FILE1 FILE2...</code>（默认显示第一个文件）</p><p>末行模式下输入 <code>next</code> 则进入下一个文件，<code>prev</code> 进入前一个文件，<code>last</code> 表示切换至最后一个文件，<code>first</code> 表示切换至第一个文件</p><h2 id="分屏打开多个文件"><a href="#分屏打开多个文件" class="headerlink" title="分屏打开多个文件"></a>分屏打开多个文件</h2><ul><li><code>vim -o FILE1 FILE2</code>：水平显示2个窗口</li><li><code>vim -O FILE1 FILE2</code>：垂直显示2个窗口</li></ul><br><h1 id="关闭文件"><a href="#关闭文件" class="headerlink" title="关闭文件"></a>关闭文件</h1><ul><li><code>:q</code>：退出</li><li><code>:wq</code>：保存并退出</li><li><code>:q!</code>：不保存并退出</li><li><code>:x</code>：相当于 wq</li><li><code>ZZ:</code>：保存并退出</li></ul><br><h1 id="编辑模式命令"><a href="#编辑模式命令" class="headerlink" title="编辑模式命令"></a>编辑模式命令</h1><h2 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h2><ul><li><code>h</code>: 光标左移</li><li><code>j</code>: 光标下移</li><li><code>k</code>: 光标上移</li><li><code>l</code>: 光标右移</li><li><code>w</code>: 移至下一个单词的词首</li><li><code>e</code>: 跳至当前或下一个单词的词尾</li><li><code>b</code>: 跳至当前或前一个单词的词首</li></ul><h2 id="行内跳转"><a href="#行内跳转" class="headerlink" title="行内跳转"></a>行内跳转</h2><ul><li><code>0</code>: 绝对行首</li><li><code>^</code>: 行首的第一个非空白字符</li><li><code>$</code>: 绝对行尾</li></ul><h2 id="行间跳转"><a href="#行间跳转" class="headerlink" title="行间跳转"></a>行间跳转</h2><ul><li><code>gg</code>：跳转至行首</li><li><code>NUMG</code>：跳转至第NUM行；</li><li><code>G</code>：最后一行</li></ul><p><strong>末行模式下，直接给出行号即可完成行间跳转</strong></p><h2 id="翻屏"><a href="#翻屏" class="headerlink" title="翻屏"></a>翻屏</h2><ul><li><code>Ctrl+f</code>: 向下翻一屏</li><li><code>Ctrl+b</code>: 向上翻一屏</li><li><code>Ctrl+d</code>: 向下翻半屏</li><li><code>Ctrl+u</code>: 向上翻半屏</li></ul><h2 id="进入输入模式"><a href="#进入输入模式" class="headerlink" title="进入输入模式"></a>进入输入模式</h2><ul><li><code>i</code>: 在当前光标所在字符的前面，转为输入模式</li><li><code>a</code>: 在当前光标所在字符的后面，转为输入模式</li><li><code>o</code>: 在当前光标所在行的下方，新建一行，并转为输入模式</li><li><code>O</code>：在当前光标所在行的上方，新建一行，并转为输入模式</li><li><code>I</code>：在当前光标所在行的行首，转换为输入模式，相当于 <code>^i</code></li><li><code>A</code>：在当前光标所在行的行尾，转换为输入模式，相当于 <code>$a</code></li><li><code>ce/cw</code>：将光标所在位置到单词尾的字符删除，并进入输入模式，相当于 <code>dei</code></li><li><code>ciw</code>：将光标所在位置的单词删除，并进入输入模式，相当于 <code>diwi</code></li><li><code>C</code>：将光标所在位置一直到行尾的字符删除，并进入输入模式，相当于 <code>Da</code></li><li><code>s</code>：将光标所在位置的字符删除，并进入输入模式，相当于 <code>xi</code></li><li><code>S</code>：将光标所在位置的行删除（保留缩进），并进入输入模式，相当于 <code>^C</code></li></ul><p><strong>注</strong>：如果要从输入模式回到编辑模式，则需要按 <strong>ESC</strong> 键</p><h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><ul><li><code>x</code>：删除光标所在处的单个字符</li><li><code>NUMx</code>：删除光标所在处及向后的共NUM个字符</li><li><code>dw/de/db</code>：根据单词删除光标前后内容</li><li><code>dd</code>：删除当前光标所在行</li><li><code>D</code>：删除光标到行尾的内容</li></ul><h2 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h2><ul><li><code>y</code>：用法同 d 命令</li></ul><h2 id="粘贴"><a href="#粘贴" class="headerlink" title="粘贴"></a>粘贴</h2><ul><li><code>p</code>：如果删除或复制为整行内容，则粘贴至光标所在行的下方，如果复制或删除的内容为非整行，则粘贴至光标所在字符的后面；</li><li><code>P</code>：如果删除或复制为整行内容，则粘贴至光标所在行的上方，如果复制或删除的内容为非整行，则粘贴至光标所在字符的前面；</li></ul><h2 id="替换"><a href="#替换" class="headerlink" title="替换"></a>替换</h2><ul><li><code>r</code>：替换单个字符</li><li><code>R</code>：进入替换模式</li></ul><h2 id="撤消编辑操作"><a href="#撤消编辑操作" class="headerlink" title="撤消编辑操作"></a>撤消编辑操作</h2><ul><li><code>u</code>：撤消前一次的编辑操作</li><li><code>Ctrl + r</code>：撤消最近一次撤消操作</li></ul><h2 id="重复前一次编辑操作"><a href="#重复前一次编辑操作" class="headerlink" title="重复前一次编辑操作"></a>重复前一次编辑操作</h2><p>按 <code>.</code>（点）可重复前一次编辑操作</p><h2 id="拆分窗口"><a href="#拆分窗口" class="headerlink" title="拆分窗口"></a>拆分窗口</h2><ul><li><code>Ctrl-w s</code>：水平拆分窗口</li><li><code>Ctrl-w v</code>：垂直拆分窗口</li></ul><br><h1 id="末行模式"><a href="#末行模式" class="headerlink" title="末行模式"></a>末行模式</h1><h2 id="删除-1"><a href="#删除-1" class="headerlink" title="删除"></a>删除</h2><p><code>StartADD,EndADDd</code> （如1,3d表示删除1到3行）</p><ul><li><code>.</code>：表示当前行</li><li><code>$</code>：最后一行</li><li><code>+NUM</code>：向下的NUM行</li></ul><h2 id="删除空白行"><a href="#删除空白行" class="headerlink" title="删除空白行"></a>删除空白行</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:g&#x2F;^\s*$&#x2F;d</span><br></pre></td></tr></table></figure><ul><li><code>g//</code>：全区命令</li><li><code>^\s*$</code>：匹配空行</li><li><code>d</code>：删除</li></ul><h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><ul><li><code>/PATTERN</code></li><li><code>?PATTERN</code></li></ul><h2 id="查找并替换"><a href="#查找并替换" class="headerlink" title="查找并替换"></a>查找并替换</h2><p>在末行模式下使用 s 命令（用法和 sed 中的 s 相同）</p><h3 id="分组替换"><a href="#分组替换" class="headerlink" title="分组替换"></a>分组替换</h3><p>如将 <code>&lt;h1&gt;Hello&lt;/h1&gt;</code> 替换为 <code>&lt;span&gt;Hello&lt;/span&gt;</code></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s&#x2F;&lt;h1&gt;\(.*\)&lt;\&#x2F;h1&gt;&#x2F;&lt;span&gt;\1&lt;\&#x2F;span&gt;</span><br></pre></td></tr></table></figure><h2 id="分屏"><a href="#分屏" class="headerlink" title="分屏"></a>分屏</h2><ul><li><code>:vsp FILENAME</code>：垂直分屏打开某个文件</li><li><code>:sp FILENAME</code>：水平分屏打开某个文件</li></ul><p><strong>在窗口间切换光标：<code>Ctrl-w</code>，上下左右光标</strong></p><h2 id="截取文件内容"><a href="#截取文件内容" class="headerlink" title="截取文件内容"></a>截取文件内容</h2><ul><li><code>:[ADDR1,ADDR2]w [/path/to/somewhere]</code>：将文件中的ADDR1行至ADDR2行保存在另一个文件中</li></ul><h2 id="填充文件"><a href="#填充文件" class="headerlink" title="填充文件"></a>填充文件</h2><ul><li><code>:r /path/to/somewhere</code>：将另一个文件的所有内容填充至当前光标后</li></ul><br><h1 id="可视化模式"><a href="#可视化模式" class="headerlink" title="可视化模式"></a>可视化模式</h1><h2 id="逐行"><a href="#逐行" class="headerlink" title="逐行"></a>逐行</h2><ul><li><code>v</code>：按字符选取</li><li><code>V</code>：按行选取</li><li><code>viw</code>：选取当前光标的单词</li><li><code>vis/vip</code>：选取当前光标所在段落</li><li><code>gu/gU</code>：选中之后，<code>gu</code> 或者 <code>gU</code> 改变大小写</li></ul><h2 id="逐列"><a href="#逐列" class="headerlink" title="逐列"></a>逐列</h2><ul><li><code>Ctrl-v</code>：进入列选择</li></ul><br>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="document.getElementById('post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div id="post-reward">
+      
+      <div>
+        <img src="/images/wechatpay.png" alt="Janvy Sun 微信">
+        <p>微信</p>
+      </div>
+      
+      <div>
+        <img src="/images/alipay.png" alt="Janvy Sun 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Janvy Sun
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://janvysun.github.io/vim/94767f55-f93e-431b-b35f-0fa56b7a4904.html" title="Vim 使用">https://janvysun.github.io/vim/94767f55-f93e-431b-b35f-0fa56b7a4904.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Vim/" rel="tag"><i class="fa fa-tag"></i> Vim</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python/f6a83fd6-85e9-4c12-9085-88c9f9da9968.html" rel="prev" title="Python 虚拟环境">
+      <i class="fa fa-chevron-left"></i> Python 虚拟环境
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/python/7f26abe0-3630-4a6f-942e-c93126cbdcb5.html" rel="next" title="Selenium 的安装与使用">
+      Selenium 的安装与使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Janvy Sun</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">370k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">12:51</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

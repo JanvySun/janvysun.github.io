@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"janvysun.github.io","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这篇文章为本人整理的 Java 方向笔试题，其中包含各种方面内容的笔试题（主要为选择题）及其答案。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 笔试题">
+<meta property="og:url" content="https://janvysun.github.io/java/cc356c4a-ea8c-4755-bd96-b982473795f6.html">
+<meta property="og:site_name" content="Janvy 的个人博客">
+<meta property="og:description" content="这篇文章为本人整理的 Java 方向笔试题，其中包含各种方面内容的笔试题（主要为选择题）及其答案。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://note.youdao.com/yws/public/resource/6c75bc432448bc1eee8de1816cf5c5d9/xmlnote/FDD3EE2368A04892BA8B07E83069A613/368">
+<meta property="article:published_time" content="2020-08-01T04:23:21.000Z">
+<meta property="article:modified_time" content="2021-06-30T13:03:57.601Z">
+<meta property="article:author" content="Janvy Sun">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://note.youdao.com/yws/public/resource/6c75bc432448bc1eee8de1816cf5c5d9/xmlnote/FDD3EE2368A04892BA8B07E83069A613/368">
+
+<link rel="canonical" href="https://janvysun.github.io/java/cc356c4a-ea8c-4755-bd96-b982473795f6.html">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java 笔试题 | Janvy 的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Janvy 的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Janvy 的个人博客</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#异常"><span class="nav-number">1.</span> <span class="nav-text">异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用-API"><span class="nav-number">2.</span> <span class="nav-text">常用 API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#String"><span class="nav-number">2.1.</span> <span class="nav-text">String</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Date-相关"><span class="nav-number">2.2.</span> <span class="nav-text">Date 相关</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">3.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集合"><span class="nav-number">4.</span> <span class="nav-text">集合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ArrayList"><span class="nav-number">4.1.</span> <span class="nav-text">ArrayList</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap-排序"><span class="nav-number">4.2.</span> <span class="nav-text">HashMap 排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">5.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程状态"><span class="nav-number">5.1.</span> <span class="nav-text">进程状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thread"><span class="nav-number">5.2.</span> <span class="nav-text">Thread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁"><span class="nav-number">5.3.</span> <span class="nav-text">锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构"><span class="nav-number">6.</span> <span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二叉树"><span class="nav-number">6.1.</span> <span class="nav-text">二叉树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#栈"><span class="nav-number">6.2.</span> <span class="nav-text">栈</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法"><span class="nav-number">7.</span> <span class="nav-text">算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#排序"><span class="nav-number">7.1.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归"><span class="nav-number">7.2.</span> <span class="nav-text">递归</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux"><span class="nav-number">8.</span> <span class="nav-text">Linux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库"><span class="nav-number">9.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#连接池"><span class="nav-number">9.1.</span> <span class="nav-text">连接池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引"><span class="nav-number">9.2.</span> <span class="nav-text">索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JDBC"><span class="nav-number">9.3.</span> <span class="nav-text">JDBC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Web"><span class="nav-number">10.</span> <span class="nav-text">Java Web</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Servlet"><span class="nav-number">10.1.</span> <span class="nav-text">Servlet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Filter"><span class="nav-number">10.2.</span> <span class="nav-text">Filter</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Janvy Sun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Janvy Sun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/janvysun" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;janvysun" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:janvysun@gmail.com" title="E-Mail → mailto:janvysun@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://janvysun.github.io/java/cc356c4a-ea8c-4755-bd96-b982473795f6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Janvy Sun">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Janvy 的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 笔试题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-01 12:23:21" itemprop="dateCreated datePublished" datetime="2020-08-01T12:23:21+08:00">2020-08-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-30 21:03:57" itemprop="dateModified" datetime="2021-06-30T21:03:57+08:00">2021-06-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A2%98%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">题库</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>24 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这篇文章为本人整理的 Java 方向笔试题，其中包含各种方面内容的笔试题（主要为选择题）及其答案。</p><a id="more"></a><h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><p><strong>调用下面的方法，得到的返回值是什么？</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> a = <span class="number">1</span> / <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>答案：3</strong></p><p>代码走到第 3 行的时候遇到了一个 MathException，这时第 4 行的代码就不会执行了，代码直接跳转到 catch 语句中，走到第 6 行的时候，异常机制有一个原则：如果在 catch 中遇到了 return 或者异常等能使该函数终止的话那么有finally 就必须先执行完 finally 代码块里面的代码然后再返回值。因此代码又跳到第 8 行，可惜第 8 行是一个 return 语句，那么这个时候方法就结束了，因此第 6 行的返回结果就无法被真正返回。如果 finally 仅仅是处理了一个释放资源的操作，那么该道题最终返回的结果就是 2。因此上面返回值是 3。</p><h2 id="常用-API"><a href="#常用-API" class="headerlink" title="常用 API"></a>常用 API</h2><h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><p><strong>请说出下面程序的输出</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StringEqualTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String s1 = <span class="string">"Programming"</span>;</span><br><span class="line">        String s2 = <span class="keyword">new</span> String(<span class="string">"Programming"</span>);</span><br><span class="line">        String s3 = <span class="string">"Program"</span>;</span><br><span class="line">        String s4 = <span class="string">"ming"</span>;</span><br><span class="line">        String s5 = <span class="string">"Program"</span> + <span class="string">"ming"</span>;</span><br><span class="line">        String s6 = s3 + s4;</span><br><span class="line">        System.out.println(s1 == s2);    <span class="comment">//false</span></span><br><span class="line">        System.out.println(s1 == s5);    <span class="comment">//true</span></span><br><span class="line">        System.out.println(s1 == s6);    <span class="comment">//false</span></span><br><span class="line">        System.out.println(s1 == s6.intern());    <span class="comment">//true</span></span><br><span class="line">        System.out.println(s2 == s2.intern());    <span class="comment">//false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>解答：</p><ul><li>String 对象的 intern() 方法会得到字符串对象在常量池中对应的版本的引用（如果常量池中有一个字符串与 String 对象的 equals 结果是 true），如果常量池中没有对应的字符串，则该字符串将被添加到常量池中，然后返回常量池中字符串的引用；</li><li>字符串的 <code>+</code> 操作其本质是创建了 StringBuilder 对象进行 append 操作，然后将拼接后的 StringBuilder 对象用 toString 方法处理成 String 对象，这一点可以用 javap -c StringEqualTest.class 命令获得 class 文件对应的 JVM 字节码指令就可以看出来。</li></ul><p><strong>下面程序的运行结果是</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    String str1 = <span class="string">"hello"</span>;</span><br><span class="line">    String str2 = <span class="string">"he"</span> + <span class="keyword">new</span> String(<span class="string">"llo"</span>);</span><br><span class="line">    String str3 = <span class="string">"he"</span> + <span class="string">"llo"</span>;</span><br><span class="line">    System.err.println(str1 == str2);   <span class="comment">// false</span></span><br><span class="line">    System.err.println(str1 == str3);   <span class="comment">// true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="Date-相关"><a href="#Date-相关" class="headerlink" title="Date 相关"></a>Date 相关</h3><p><strong>如何取得年月日、小时分钟秒？</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.time.LocalDateTime;</span><br><span class="line"><span class="keyword">import</span> java.util.Calendar;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DateTimeTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Calendar cal = Calendar.getInstance();</span><br><span class="line">        System.out.println(cal.get(Calendar.YEAR));</span><br><span class="line">        System.out.println(cal.get(Calendar.MONTH)); <span class="comment">// 0 - 11</span></span><br><span class="line">        System.out.println(cal.get(Calendar.DATE));</span><br><span class="line">        System.out.println(cal.get(Calendar.HOUR_OF_DAY));</span><br><span class="line">        System.out.println(cal.get(Calendar.MINUTE));</span><br><span class="line">        System.out.println(cal.get(Calendar.SECOND));</span><br><span class="line">        <span class="comment">// Java 8</span></span><br><span class="line">        LocalDateTime dt = LocalDateTime.now();</span><br><span class="line">        System.out.println(dt.getYear());</span><br><span class="line">        System.out.println(dt.getMonthValue()); <span class="comment">// 1 - 12</span></span><br><span class="line">        System.out.println(dt.getDayOfMonth());</span><br><span class="line">        System.out.println(dt.getHour());</span><br><span class="line">        System.out.println(dt.getMinute());</span><br><span class="line">        System.out.println(dt.getSecond());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>如何取得从 1970 年 1 月 1 日 0 时 0 分 0 秒到现在的毫秒数？</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GetTime</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"第一种："</span> + Calendar.getInstance().getTimeInMillis());</span><br><span class="line">        System.out.println(<span class="string">"第二种："</span> + System.currentTimeMillis());</span><br><span class="line">        System.out.println(<span class="string">"第三种："</span> + Clock.systemDefaultZone().millis());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>如何取得某月的最后一天？</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GetLastDay</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SimpleDateFormat format = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line">        <span class="comment">//获取当前月第一天：</span></span><br><span class="line">        Calendar c = Calendar.getInstance();</span><br><span class="line">        c.add(Calendar.MONTH, <span class="number">0</span>);</span><br><span class="line">        c.set(Calendar.DAY_OF_MONTH, <span class="number">1</span>);<span class="comment">//设置为 1 号，当前日期既为本月第一天</span></span><br><span class="line">        String first = format.format(c.getTime());</span><br><span class="line">        System.out.println(<span class="string">"first:"</span> + first);</span><br><span class="line">        <span class="comment">//获取当前月最后一天</span></span><br><span class="line">        Calendar ca = Calendar.getInstance();</span><br><span class="line">        ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));</span><br><span class="line">        String last = format.format(ca.getTime());</span><br><span class="line">        System.out.println(<span class="string">"last:"</span> + last);</span><br><span class="line">        <span class="comment">//Java 8</span></span><br><span class="line">        LocalDate today = LocalDate.now();</span><br><span class="line">        <span class="comment">//本月的第一天</span></span><br><span class="line">        LocalDate firstday = LocalDate.of(today.getYear(), today.getMonth(), <span class="number">1</span>);</span><br><span class="line">        <span class="comment">//本月的最后一天</span></span><br><span class="line">        LocalDate lastDay = today.with(TemporalAdjusters.lastDayOfMonth());</span><br><span class="line">        System.out.println(<span class="string">"本月的第一天"</span> + firstday);</span><br><span class="line">        System.out.println(<span class="string">"本月的最后一天"</span> + lastDay);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>运行结果：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">first:2019-04-01</span><br><span class="line">last:2019-04-30</span><br><span class="line">本月的第一天2019-04-01</span><br><span class="line">本月的最后一天2019-04-30</span><br></pre></td></tr></table></figure><p><strong>如何格式化日期？</strong><br>java.text.DataFormat 的子类（如 SimpleDateFormat 类）中的 format(Date) 方法可将日期格式化。Java 8 中可以用 java.time.format.DateTimeFormatter 来格式化时间日期，代码如下所示：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"><span class="keyword">import</span> java.time.LocalDate;</span><br><span class="line"><span class="keyword">import</span> java.time.format.DateTimeFormatter;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DateFormatTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SimpleDateFormat oldFormatter = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy/MM/dd"</span>);</span><br><span class="line">        Date date1 = <span class="keyword">new</span> Date();</span><br><span class="line">        System.out.println(oldFormatter.format(date1));</span><br><span class="line">        <span class="comment">// Java 8</span></span><br><span class="line">        DateTimeFormatter newFormatter = DateTimeFormatter.ofPattern(<span class="string">"yyyy/MM/dd"</span>);</span><br><span class="line">        LocalDate date2 = LocalDate.now();</span><br><span class="line">        System.out.println(date2.format(newFormatter));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>运行结果：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2019&#x2F;04&#x2F;22</span><br><span class="line">2019&#x2F;04&#x2F;22</span><br></pre></td></tr></table></figure><p>补充：Java 的时间日期 API 一直以来都是被诟病的东西，为了解决这一问题，Java 8 中引入了新的时间日期 API， 其中包括 LocalDate、LocalTime、LocalDateTime、Clock、Instant 等类，这些的类的设计都使用了不变模式，因此是线程安全的设计。</p><p><strong>打印昨天的当前时刻？</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Calendar;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YesterdayCurrent</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Calendar cal = Calendar.getInstance();</span><br><span class="line">        cal.add(Calendar.DATE, -<span class="number">1</span>);</span><br><span class="line">        System.out.println(cal.getTime());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//java-8</span></span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YesterdayCurrent</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        LocalDateTime today = LocalDateTime.now();</span><br><span class="line">        LocalDateTime yesterday = today.minusDays(<span class="number">1</span>);</span><br><span class="line">        System.out.println(yesterday);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>下面 Integer 类型的数值比较输出的结果为？</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Integer f1 = <span class="number">100</span>, f2 = <span class="number">100</span>, f3 = <span class="number">150</span>, f4 = <span class="number">150</span>;</span><br><span class="line">        System.out.println(f1 == f2);</span><br><span class="line">        System.out.println(f3 == f4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>解析：<br>简单的说，如果整型字面量的值在 -128 到 127 之间，那么不会 new 新的 Integer 对象，而是直接引用常量池中的 Integer 对象，所以上面的题中 <code>f1==f2</code> 的结果是 true，而 <code>f3==f4</code> 的结果是 false。</p><h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><h3 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h3><p><strong><code>ArrayList list = new ArrayList(20);</code> 语句中的 list 集合大小扩充了几次（A）</strong><br>A.0<br>B.1<br>C.2<br>D.3</p><h3 id="HashMap-排序"><a href="#HashMap-排序" class="headerlink" title="HashMap 排序"></a>HashMap 排序</h3><p>已知一个 <code>HashMap&lt;Integer，User&gt;</code> 集合， User 有 name（String）和 age（int）属性。请写一个方法实现对HashMap 的排序功能，该方法接收 <code>HashMap&lt;Integer，User&gt;</code> 为形参，返回类型为 <code>HashMap&lt;Integer，User&gt;</code>，要求对 HashMap 中的 User 的 age 倒序进行排序。排序时 key=value 键值对不得拆散。</p><p>注意：要做出这道题必须对集合的体系结构非常的熟悉。HashMap 本身就是不可排序的，但是该题偏偏让 HashMap 排序，那我们就得想在 API 中有没有这样的 Map 结构是有序的，我们不难发现其中 LinkedHashMap 就具有这样的结构，是链表结构有序的，更可喜的是他是 HashMap 的子类，我们返回 <code>LinkedHashMap&lt;Integer，User&gt;</code> 即可，还符合面向接口编程的思想。</p><p>但凡是对集合的操作，我们应该保持一个原则就是能用 JDK 中的 API 就用 JDK 中的 API，比如排序算法我们不应该去用冒泡或者选择，而是首先想到用 Collections 集合工具类。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HashMapTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        HashMap&lt;Integer, User&gt; users = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        users.put(<span class="number">1</span>, <span class="keyword">new</span> User(<span class="string">"张三"</span>, <span class="number">25</span>));</span><br><span class="line">        users.put(<span class="number">3</span>,<span class="keyword">new</span> User(<span class="string">"李四"</span>,<span class="number">22</span>));</span><br><span class="line">        users.put(<span class="number">2</span>, <span class="keyword">new</span> User(<span class="string">"王五"</span>, <span class="number">28</span>));</span><br><span class="line">        System.out.println(users);</span><br><span class="line">        HashMap&lt;Integer, User&gt; sortHashMap = sortHashMap(users);</span><br><span class="line">        System.out.println(sortHashMap);</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 控制台输出内容</span></span><br><span class="line"><span class="comment">         * &#123;1=User [name=张三, age=25], 2=User [name=王五,age=28], 3=User [name=李四, age=22]&#125;</span></span><br><span class="line"><span class="comment">         * &#123;2=User [name=王五, age=28], 1=User [name=张三, age=25], 3=User [name=李四, age=22]&#125;</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HashMap&lt;Integer, User&gt; <span class="title">sortHashMap</span><span class="params">(HashMap&lt;Integer, User&gt; map)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 首先拿到 map 的键值对集合</span></span><br><span class="line">        Set&lt;Map.Entry&lt;Integer, User&gt;&gt; entrySet = map.entrySet();</span><br><span class="line">        <span class="comment">// 将 set 集合转为 List 集合，为什么，为了使用工具类的排序方法</span></span><br><span class="line">        List&lt;Map.Entry&lt;Integer,User&gt;&gt; list = <span class="keyword">new</span> ArrayList&lt;Map.Entry&lt;Integer, User&gt;&gt;(entrySet);</span><br><span class="line">        <span class="comment">// 使用 Collections 集合工具类对 list 进行排序，排序规则使用匿名内部类来实现</span></span><br><span class="line">        Collections.sort(list, <span class="keyword">new</span> Comparator&lt;Map.Entry&lt;Integer, User&gt;&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Map.Entry&lt;Integer, User&gt; o1, Map.Entry&lt;Integer, User&gt; o2)</span> </span>&#123;</span><br><span class="line">                <span class="comment">//按照要求根据 User 的 age 的倒序进行排</span></span><br><span class="line">                <span class="keyword">return</span> o2.getValue().getAge() - o1.getValue().getAge();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">//创建一个新的有序的 HashMap 子类的集合</span></span><br><span class="line">        LinkedHashMap&lt;Integer, User&gt; linkedHashMap = <span class="keyword">new</span> LinkedHashMap&lt;Integer, User&gt;();</span><br><span class="line">        <span class="comment">//将 List 中的数据存储在 LinkedHashMap 中</span></span><br><span class="line">        <span class="keyword">for</span> (Map.Entry&lt;Integer,User&gt; entry : list) &#123;</span><br><span class="line">            linkedHashMap.put(entry.getKey(), entry.getValue());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> linkedHashMap;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"User&#123;"</span> +</span><br><span class="line">                <span class="string">"name='"</span> + name + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">", age="</span> + age +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><h3 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h3><p><strong>下列哪些方法可以使线程从运行状态进入到阻塞状态（BCD）</strong><br>A.notify<br>B.wait<br>C.sleep<br>D.yield</p><h3 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h3><p><strong>下列关于 Thread 类提供的线程控制的方法中，错误的一项是（A）</strong><br>A.在线程A中执行线程 B 的 join() 方法，则线程 A 等待直到 B 执行完成。<br>B.线程A通过调用 interrupt() 方法来中断其阻塞状态。<br>C.currentThread() 方法返回当前线程的引用。<br>D.若线程A调用方法 isAlive() 返回为 true，则说明 A 正在执行中。</p><h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><p><strong>关于锁 locks，描述正确的是（A）</strong><br>A.当一个事务在表上防止了共享锁（shared lock），其他事务，能阅读表里的数据<br>B.当一个事务在表上防止了共享锁（shared lock），其他事务，能更新表里的数据<br>C.当一个事务在表上防止了排他锁（exclusive lock），其他事务，能阅读表里的数据<br>D.当一个事务在表上防止了排他锁（exclusive lock），其他事务，能更新表里的数据</p><h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><p><strong>下列哪两个数据结构，同时具有较高的查找和删除性能？（CD）</strong><br>A.有序数组<br>B.有序链表<br>C.AVL 树<br>D.Hash 表</p><p>分析如下：</p><table><thead><tr><th>数据结构</th><th align="center">查找</th><th align="center">插入</th><th align="center">删除</th><th align="center">遍历</th></tr></thead><tbody><tr><td>数组</td><td align="center">O(N)</td><td align="center">O(1)</td><td align="center">O(N)</td><td align="center">—</td></tr><tr><td>有序数组</td><td align="center">O(logN)</td><td align="center">O(N)</td><td align="center">O(N)</td><td align="center">O(N)</td></tr><tr><td>链表</td><td align="center">O(N)</td><td align="center">O(1)</td><td align="center">O(N)</td><td align="center">—</td></tr><tr><td>有序链表</td><td align="center">O(N)</td><td align="center">O(N)</td><td align="center">O(N)</td><td align="center">O(N)</td></tr><tr><td>二叉树（一般情况）</td><td align="center">O(logN)</td><td align="center">O(logN)</td><td align="center">O(logN)</td><td align="center">O(N)</td></tr><tr><td>二叉树（最坏情况）</td><td align="center">O(N)</td><td align="center">O(N)</td><td align="center">O(N)</td><td align="center">O(N)</td></tr><tr><td>平衡树（AVL）</td><td align="center">O(logN)</td><td align="center">O(logN)</td><td align="center">O(logN)</td><td align="center">O(N)</td></tr><tr><td>哈希表</td><td align="center">O(1)</td><td align="center">O(1)</td><td align="center">O(1)</td><td align="center">—</td></tr></tbody></table><h3 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h3><p>7、已知一棵二叉树，如果先序遍历的节点顺序是：ADCEFGHB ，中序遍历是：CDFEGHAB ，则后序遍历结果为：（D）<br>A.CFHGEBDA<br>B.CDFEGHBA<br>C.FGHCDEBA<br>D. CFHGEDBA</p><p>分析：根据二叉树的前序遍历与中序遍历，可得出二叉树为：</p><p><img src="https://note.youdao.com/yws/public/resource/6c75bc432448bc1eee8de1816cf5c5d9/xmlnote/FDD3EE2368A04892BA8B07E83069A613/368" alt=""></p><h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><p><strong>一个栈的入栈序列是 A，B，C，D，E，则栈的不可能的输出序列是？（C）</strong><br>A．EDCBA<br>B．DECBA<br>C．DCEAB<br>D．ABCDE</p><p><strong>下列关于栈的描述错误的是（B）</strong><br>A.栈是先进后出的线性表<br>B.栈只能顺序存储<br>C.栈具有记忆功能<br>D.对栈的插入和删除操作中，不需要改变栈底指针</p><h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><p><strong>下列排序算法中，哪些时间复杂度不会超过 nlogn？（BC）</strong><br>A.快速排序<br>B.堆排序<br>C.归并排序<br>D.冒泡排序</p><p>分析如下：</p><table><thead><tr><th>排序方法</th><th align="center">时间复杂度</th><th align="center">空间复杂度</th><th align="center">稳定性</th></tr></thead><tbody><tr><td>选择排序</td><td align="center">O(N²)</td><td align="center">O(1)</td><td align="center">不稳定</td></tr><tr><td>冒泡排序</td><td align="center">O(N²)</td><td align="center">O(1)</td><td align="center">稳定</td></tr><tr><td>插入排序</td><td align="center">O(N²)</td><td align="center">O(1)</td><td align="center">稳定</td></tr><tr><td>shell 排序</td><td align="center">O(N¹·³)</td><td align="center">O(1)</td><td align="center">不稳定</td></tr><tr><td>快速排序</td><td align="center">O(NlogN)</td><td align="center">O(NlogN)</td><td align="center">不稳定</td></tr><tr><td>归并排序</td><td align="center">O(NlogN)</td><td align="center">O(1)</td><td align="center">稳定</td></tr><tr><td>堆排序</td><td align="center">O(NlogN)</td><td align="center">O(1)</td><td align="center">不稳定</td></tr></tbody></table><p><strong>初始序列为 1 8 6 2 5 4 7 3 一组数采用堆排序，当建堆（小根堆）完毕时，堆所对应的二叉树中序遍历序列为：（A）</strong><br>A. 8 3 2 5 1 6 4 7<br>B. 3 2 8 5 1 4 6 7<br>C. 3 8 2 5 1 6 7 4<br>D. 8 2 3 5 1 4 7 6</p><p>解析：初始化序列：1 8 6 2 5 4 7 3，小根堆就是要求结点的值小于其左右孩子结点的值，左右孩子的大小没有关系，那么小根堆排序之后为：1 2 4 3 5 6 7 8；中序遍历：左根右，故遍历结果为：8 3 2 5 1 6 4 7，故最后选择的结果：A</p><p><strong>写出一个冒泡排序</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bubbleSort</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> arr[] = &#123;-<span class="number">5</span>, <span class="number">29</span>, <span class="number">7</span>, <span class="number">10</span>, <span class="number">5</span>, <span class="number">16</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; arr.length - i; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="keyword">int</span> temp;</span><br><span class="line">                temp = arr[j];</span><br><span class="line">                arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">                arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        System.out.print(<span class="string">" "</span> + arr[i] + <span class="string">" "</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><p><strong>当 n = 5 时，下列函数的返回值是：（A）</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">2</span>) <span class="keyword">return</span> n;</span><br><span class="line">    <span class="keyword">return</span> foo(n - <span class="number">1</span>) + foo(n - <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>A．5<br>B．7<br>C．8<br>D．1</p><p><strong>递归函数最终会结束，那么这个函数一定？（B）</strong><br>A.使用了局部变量<br>B.有一个分支不调用自身<br>C.使用了全局变量或者使用了一个或多个参数<br>D.没有循环调用</p><h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p><strong>Linux 系统中，哪些可以用于进程间的通信？（ABCD ）</strong><br>A．Socket<br>B．共享内存<br>C．消息队列<br>D．信号量</p><p>Linux 中，可用于进程间通信的有：</p><ul><li>管道（Pipe）及有名管道（named pipe）：管道可用于具有亲缘关系进程间的通信，有名管道克服了管道没有名字的限制，因此，除具有管道所具有的功能外，它还允许无亲缘关系进程间的通信；</li><li>信号（Signal）：信号是比较复杂的通信方式，用于通知接受进程有某种事件发生，除了用于进程间通信外，进程还可以发送信号给进程本身；linux 除了支持 Unix 早期信号语义函数 sigal 外，还支持语义符合 Posix.1 标准的信号函数 sigaction（实际上，该函数是基于 BSD 的，BSD 为了实现可靠信号机制，又能够统一对外接口，用 sigaction 函数重新实现了 signal 函数）；</li><li>报文（Message）队列（消息队列）：消息队列是消息的链接表，包括 Posix 消息队列 system V 消息队列。有足够权限的进程可以向队列中添加消息，被赋予读权限的进程则可以读走队列中的消息。消息队列克服了信号承载信息量少，管道只能承载无格式字节流以及缓冲区大小受限等缺点。</li><li>共享内存：使得多个进程可以访问同一块内存空间，是最快的可用 IPC 形式。是针对其他通信机制运行效率较低而设计的。往往与其它通信机制，如信号量结合使用，来达到进程间的同步及互斥。</li><li>信号量（semaphore）：主要作为进程间以及同一进程不同线程之间的同步手段。</li><li>套接口（Socket）：更为一般的进程间通信机制，可用于不同机器之间的进程间通信。起初是由 Unix 系统的 BSD分支开发出来的，但现在一般可以移植到其它类 Unix 系统上：Linux 和 System V 的变种都支持套接字。</li></ul><h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><h3 id="连接池"><a href="#连接池" class="headerlink" title="连接池"></a>连接池</h3><p><strong>下列关于数据库连接池的说法中哪个是错误的（D）</strong><br>A.服务器启动时会初始建立一定数量的池连接，并一直维持不少于此数目的池连接。<br>B.客户端程序需要连接时，池驱动程序会返回一个使用的池连接并将其使用计数加 1。<br>C.如果当前没有空闲连接，驱动程序就会再新建一定数量的连接，新建连接的数量可以由配置参数决定。<br>D.当使用池连接调用完成后，池驱动程序将此连接标记为空间，其他调用就可以使用这个连接。</p><h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p><strong>以下哪句是对索引的错误描述（C）</strong><br>A.选择性差的索引只会降低 DML 语句的执行速度<br>B.选择性强的索引只有被 Access Path 使用到才是有用的索引<br>C.过多的索引只会阻碍性能的提升，而不是加速性能<br>D.在适当的时候将最常用的列放在复合索引的最前面<br>E.索引和表的数据都存储在同一个 Segment 中</p><h3 id="JDBC"><a href="#JDBC" class="headerlink" title="JDBC"></a>JDBC</h3><p><strong>请编写一个jdbc查询任意一个数据库（如 MySQL、Oracle 等），数据库名为test，表名为user，只有一个字段。</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SqlConnectionUtil</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Connection conn = <span class="keyword">null</span>;</span><br><span class="line">        Statement stmt = <span class="keyword">null</span>;</span><br><span class="line">        ResultSet rs = <span class="keyword">null</span>;</span><br><span class="line">        String sql;</span><br><span class="line">        String url = <span class="string">"jdbc:MySQL://localhost:3306/test?user=root&amp;password=root&amp;useUnicode=true&amp;characterEncoding=UTF8"</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Class.forName(<span class="string">"com.MySQL.jdbc.Driver"</span>);</span><br><span class="line">            conn = DriverManager.getConnection(url);</span><br><span class="line">            stmt = conn.createStatement();</span><br><span class="line">            sql = <span class="string">"select * from user"</span>;</span><br><span class="line">            rs = stmt.executeQuery(sql);</span><br><span class="line">            <span class="keyword">while</span> (rs.next()) &#123;</span><br><span class="line">                String name = rs.getString(<span class="string">"name"</span>);</span><br><span class="line">                System.out.println(<span class="string">"姓名是："</span> + name);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (rs != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    rs.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (stmt != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    stmt.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (conn != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    conn.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="Java-Web"><a href="#Java-Web" class="headerlink" title="Java Web"></a>Java Web</h2><h3 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h3><p><strong>有关Servlet的生命周期说法正确的有（CD）</strong><br>A. Servlet 的生命周期由 Servlet 实例控制<br>B. init() 方法在创建完 Servlet 实例后对其进行初始化，传递的参数为实现 ServletContext 接口的对象<br>C. service() 方法响应客户端发出的请求<br>D. destroy() 方法释放 Servlet 实例</p><h3 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h3><p><strong>编写一个Filter，需要（B）</strong><br>A. 继承 Filter 类<br>B. 实现 Filter 接口<br>C. 继承 HttpFilter 类<br>D. 实现 HttpFilter 接口</p>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="document.getElementById('post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div id="post-reward">
+      
+      <div>
+        <img src="/images/wechatpay.png" alt="Janvy Sun 微信">
+        <p>微信</p>
+      </div>
+      
+      <div>
+        <img src="/images/alipay.png" alt="Janvy Sun 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Janvy Sun
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://janvysun.github.io/java/cc356c4a-ea8c-4755-bd96-b982473795f6.html" title="Java 笔试题">https://janvysun.github.io/java/cc356c4a-ea8c-4755-bd96-b982473795f6.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/java/48704b01-97d8-4702-a476-d9e013ac36c2.html" rel="prev" title="Java 面试题">
+      <i class="fa fa-chevron-left"></i> Java 面试题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/spring/e52ef0ff-ffe9-4471-815e-76727d599756.html" rel="next" title="Spring Boot 基础">
+      Spring Boot 基础 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Janvy Sun</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">370k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">12:51</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

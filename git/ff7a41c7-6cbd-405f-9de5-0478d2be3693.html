@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"janvysun.github.io","root":"/","scheme":"Gemini","version":"8.0.0-rc.4","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="假设你准备开发一个新功能，但是需要两周才能完成。第一周你写了50%的代码，如果立刻提交，由于代码还没写完，不完整的代码库会导致别人不能干活了。如果等代码全部写完再一次提交，又存在丢失每天进度的巨大风险。现在有了分支，就不用怕了。你创建了一个属于你自己的分支，别人看不到，还继续在原来的分支上正常工作，而你在自己的分支上干活。想提交就提交，直到开发完毕后，再一次性合并到原来的分支上，这样，既安全，又不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git 分支操作">
+<meta property="og:url" content="https://janvysun.github.io/git/ff7a41c7-6cbd-405f-9de5-0478d2be3693.html">
+<meta property="og:site_name" content="Janvy 的个人博客">
+<meta property="og:description" content="假设你准备开发一个新功能，但是需要两周才能完成。第一周你写了50%的代码，如果立刻提交，由于代码还没写完，不完整的代码库会导致别人不能干活了。如果等代码全部写完再一次提交，又存在丢失每天进度的巨大风险。现在有了分支，就不用怕了。你创建了一个属于你自己的分支，别人看不到，还继续在原来的分支上正常工作，而你在自己的分支上干活。想提交就提交，直到开发完毕后，再一次性合并到原来的分支上，这样，既安全，又不">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-26T04:15:23.000Z">
+<meta property="article:modified_time" content="2021-06-30T13:03:57.839Z">
+<meta property="article:author" content="Janvy Sun">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://janvysun.github.io/git/ff7a41c7-6cbd-405f-9de5-0478d2be3693.html">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Git 分支操作 | Janvy 的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Janvy 的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Janvy 的个人博客</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建与合并分支"><span class="nav-number">1.</span> <span class="nav-text">创建与合并分支</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决冲突"><span class="nav-number">2.</span> <span class="nav-text">解决冲突</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bug-分支"><span class="nav-number">3.</span> <span class="nav-text">Bug 分支</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Janvy Sun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Janvy Sun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/janvysun" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;janvysun" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:janvysun@gmail.com" title="E-Mail → mailto:janvysun@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+        <div class="back-to-top animated">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://janvysun.github.io/git/ff7a41c7-6cbd-405f-9de5-0478d2be3693.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Janvy Sun">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Janvy 的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git 分支操作
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-26 12:15:23" itemprop="dateCreated datePublished" datetime="2020-03-26T12:15:23+08:00">2020-03-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-30 21:03:57" itemprop="dateModified" datetime="2021-06-30T21:03:57+08:00">2021-06-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Software/" itemprop="url" rel="index"><span itemprop="name">Software</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>假设你准备开发一个新功能，但是需要两周才能完成。第一周你写了50%的代码，如果立刻提交，由于代码还没写完，不完整的代码库会导致别人不能干活了。如果等代码全部写完再一次提交，又存在丢失每天进度的巨大风险。</p><p>现在有了分支，就不用怕了。你创建了一个属于你自己的分支，别人看不到，还继续在原来的分支上正常工作，而你在自己的分支上干活。想提交就提交，直到开发完毕后，再一次性合并到原来的分支上，这样，既安全，又不影响别人工作。</p><a id="more"></a><h1 id="创建与合并分支"><a href="#创建与合并分支" class="headerlink" title="创建与合并分支"></a>创建与合并分支</h1><p>Git 把我们之前每次提交的版本串成一条时间线，这条时间线就是一个<strong>分支</strong>。截止到目前只有一条时间线，在 Git 里，这个分支叫主分支，即 <strong>master 分支</strong>。</p><p>一开始的时候，master 分支是一条线，Git 用 master 指向最新的提交，再用 HEAD 指向 master，就能确定当前分支，以及当前分支的提交点。每次提交，master 分支都会向前移动一步，这样，随着你不断提交，master 分支的线也越来越长。</p><p>当我们创建新的分支，例如 dev 时，Git 新建了一个指针叫 dev，指向 master 相同的提交，再把 HEAD 指向 dev，就表示当前分支在 dev 上。Git 创建一个分支很快，因为除了增加一个 dev 指针，改变 HEAD 的指向，工作区的文件都没有任何变化。</p><p>不过，从现在开始，对工作区的修改和提交就是针对 dev 分支了，比如新提交一次后，dev 指针往前移动一步，而 master 指针不变。假如我们在 dev 上的工作完成了，就可以把 dev 合并到 master 上。</p><p>Git 怎么合并呢？最简单的方法，就是直接把 master 指向 dev 的当前提交，就完成了合并。Git 合并分支也很快，就改改指针，工作区内容也不变。合并完分支后，甚至可以删除 dev 分支。删除 dev 分支就是把 dev 指针给删掉，删掉后，我们就剩下了一条 master 分支</p><p>我们可以使用 <code>git branch</code> 命令来查看当前有几个分支，并且可以知道我们在哪个分支下工作：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@Linux git_test# git branch </span><br><span class="line">* master</span><br></pre></td></tr></table></figure><p>然后我们可以创建一个新的分支，有两种方法：</p><ul><li><strong><code>git branch NAME</code></strong>：创建一个新的分支</li><li><strong><code>git checkout -b NAME</code></strong>：创建并切换到新分支<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@Linux git_test# git checkout -b dev</span><br><span class="line">Switched to a new branch &#39;dev&#39;</span><br><span class="line">root@Linux git_test# git branch </span><br><span class="line">* dev</span><br><span class="line">  master</span><br></pre></td></tr></table></figure></li></ul><p>之后我们可以进行新的操作并进行提交，如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@Linux git_test# vim code </span><br><span class="line">root@Linux git_test# git add code</span><br><span class="line">root@Linux git_test# git commit -m &#39;dev分支提交&#39;</span><br><span class="line">[dev 7b61bd1] dev分支提交</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br><span class="line">root@Linux git_test# git log --pretty&#x3D;oneline </span><br><span class="line">7b61bd17ec3abb4a950f0a313ad3f73078b2160b dev分支提交</span><br><span class="line">7318522d370086d9a9c856c0404bb6c4999b893d 版本2</span><br><span class="line">b83de1e3cce9f3c7b903a677906ca0c513f7f086 版本1</span><br></pre></td></tr></table></figure><p>然后使用 <code>git checkout master</code> 切换回 master 分支，可以看到并没有 dev 分支的提交：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@Linux git_test# git checkout master </span><br><span class="line">Switched to branch &#39;master&#39;</span><br><span class="line">root@Linux git_test# git log --pretty&#x3D;oneline </span><br><span class="line">7318522d370086d9a9c856c0404bb6c4999b893d 版本2</span><br><span class="line">b83de1e3cce9f3c7b903a677906ca0c513f7f086 版本1</span><br></pre></td></tr></table></figure><p>之后可以使用 <code>git merge dev</code> 来合并 dev 分支到 master 上：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@Linux git_test# git merge dev </span><br><span class="line">Updating 7318522..7b61bd1</span><br><span class="line">Fast-forward</span><br><span class="line"> code | 1 +</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br><span class="line">root@Linux git_test# git log --pretty&#x3D;oneline </span><br><span class="line">7b61bd17ec3abb4a950f0a313ad3f73078b2160b dev分支提交</span><br><span class="line">7318522d370086d9a9c856c0404bb6c4999b893d 版本2</span><br><span class="line">b83de1e3cce9f3c7b903a677906ca0c513f7f086 版本1</span><br></pre></td></tr></table></figure><p>注意这里使用的是 <strong>Fast-forward</strong>，Git 告诉我们，这次合并是「快速模式」，也就是直接把 master <strong>指向</strong> dev 的当前提交，所以合并速度非常快。合并完成之后可以删除dev分支了，如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@Linux git_test# git branch -d dev</span><br><span class="line">Deleted branch dev (was 7b61bd1).</span><br><span class="line">root@Linux git_test# git branch </span><br><span class="line">* master</span><br></pre></td></tr></table></figure><br><h1 id="解决冲突"><a href="#解决冲突" class="headerlink" title="解决冲突"></a>解决冲突</h1><p>合并分支往往也不是一帆风顺的。如果在 dev 分支下对某个文件进行修改然后提交，之后切换回 master 分支再对这个文件进行修改并提交，如果 master 想要合并 dev 分支，就会有冲突，如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root@Linux git_test# vim code </span><br><span class="line">root@Linux git_test# git add code</span><br><span class="line">root@Linux git_test# git commit -m &#39;dev冲突提交&#39;</span><br><span class="line">[dev 7644bd1] dev冲突提交</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br><span class="line">root@Linux git_test# git checkout master </span><br><span class="line">Switched to branch &#39;master&#39;</span><br><span class="line">root@Linux git_test# vim code </span><br><span class="line">root@Linux git_test# git add code</span><br><span class="line">root@Linux git_test# git commit -m &#39;master冲突提交&#39;</span><br><span class="line">[master ebc2ba5] master冲突提交</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br><span class="line">root@Linux git_test# git merge dev</span><br><span class="line">Auto-merging code</span><br><span class="line">CONFLICT (content): Merge conflict in code</span><br><span class="line">Automatic merge failed; fix conflicts and then commit the result.</span><br></pre></td></tr></table></figure><p>这时候就提示有冲突，需要解决冲突，打开 code 文件可以看到：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">This is the first line</span><br><span class="line">This is the second line</span><br><span class="line">This is the third line</span><br><span class="line">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span><br><span class="line">This is the master new line</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">This is the dev new line</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt; dev</span><br></pre></td></tr></table></figure><p>需要将 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>、<code>=======</code>、<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> 这些内容去掉，然后再进行一次提交，如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root@Linux git_test# git add code</span><br><span class="line">root@Linux git_test# git commit -m &#39;解决冲突&#39;</span><br><span class="line">[master abe37f9] 解决冲突</span><br><span class="line">root@Linux git_test# git log --pretty&#x3D;oneline --graph </span><br><span class="line">*   abe37f91dcec5ad24b1a4c95f71650b08e8b68c6 解决冲突</span><br><span class="line">|\  </span><br><span class="line">| * 7644bd1e80d1013979aa14c9d9d67d7611196e1c dev冲突提交</span><br><span class="line">* | ebc2ba59de73ccb04c207d6f3748bf1137028b93 master冲突提交</span><br><span class="line">|&#x2F;  </span><br><span class="line">* 7b61bd17ec3abb4a950f0a313ad3f73078b2160b dev分支提交</span><br><span class="line">* 7318522d370086d9a9c856c0404bb6c4999b893d 版本2</span><br><span class="line">* b83de1e3cce9f3c7b903a677906ca0c513f7f086 版本1</span><br></pre></td></tr></table></figure><p>合并完成，可以删除 dev 分支了。</p><p><strong>注意</strong>：这种有冲突的情况往往是发生在<strong>两个分支修改了同一个文件并提交</strong>的时候</p><br><h1 id="Bug-分支"><a href="#Bug-分支" class="headerlink" title="Bug 分支"></a>Bug 分支</h1><p>在 Git 中，每个 Bug 都可以通过一个新的临时分支来修复，修复后，合并分支，然后将临时分支删除。如：当你接到一个修复一个代号 001 的 Bug 的任务时，很自然地，你想创建一个分支 bug-1 来修复它，但是，当前正在 dev 上进行的工作还没有提交。这时候可以使用 <code>git stash</code> 把当前工作现场 “保存” 起来，等以后恢复现场后继续工作：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">root@Linux git_test2# git checkout -b dev</span><br><span class="line">Switched to a new branch &#39;dev&#39;</span><br><span class="line">root@Linux git_test2# vim code </span><br><span class="line">root@Linux git_test2# git stash </span><br><span class="line">Saved working directory and index state WIP on dev: 89d3e06 删除</span><br><span class="line">HEAD is now at 89d3e06 删除</span><br><span class="line">root@Linux git_test2# git checkout -b bug-1</span><br><span class="line">Switched to a new branch &#39;bug-1&#39;</span><br><span class="line">root@Linux git_test2# vim code </span><br><span class="line">root@Linux git_test2# git add code</span><br><span class="line">root@Linux git_test2# git commit -m &#39;修复bug1&#39;</span><br><span class="line">[bug-1 f2d31b4] 修复bug1</span><br><span class="line"> 1 file changed, 3 deletions(-)</span><br><span class="line">root@Linux git_test2# git checkout master </span><br><span class="line">Switched to branch &#39;master&#39;</span><br><span class="line">root@Linux git_test2# git merge --no-ff -m &#39;修复bug1&#39; bug-1 </span><br><span class="line">Merge made by the &#39;recursive&#39; strategy.</span><br><span class="line"> code | 3 ---</span><br><span class="line"> 1 file changed, 3 deletions(-)</span><br><span class="line">root@Linux git_test2# git branch -d bug-1 </span><br><span class="line">Deleted branch bug-1 (was f2d31b4).</span><br><span class="line">root@Linux git_test2# git log --pretty&#x3D;oneline --graph </span><br><span class="line">*   57eb3a55fa658d21437ea67cfe151ae5a78988c3 修复bug1</span><br><span class="line">|\  </span><br><span class="line">| * f2d31b4ce666471c47a585bf940494c1f5d92cc2 修复bug1</span><br><span class="line">|&#x2F;  </span><br><span class="line">* 7b61bd17ec3abb4a950f0a313ad3f73078b2160b dev分支提交</span><br><span class="line">* 7318522d370086d9a9c856c0404bb6c4999b893d 版本2</span><br><span class="line">* b83de1e3cce9f3c7b903a677906ca0c513f7f086 版本1</span><br></pre></td></tr></table></figure><p>这里就是临时修复了 bug1，然后就使用 <code>git stash pop</code> 来恢复工作现场，之后就可以继续之前的工作了。</p><br>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="document.getElementById('post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div id="post-reward">
+      
+      <div>
+        <img src="/images/wechatpay.png" alt="Janvy Sun 微信">
+        <p>微信</p>
+      </div>
+      
+      <div>
+        <img src="/images/alipay.png" alt="Janvy Sun 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Janvy Sun
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://janvysun.github.io/git/ff7a41c7-6cbd-405f-9de5-0478d2be3693.html" title="Git 分支操作">https://janvysun.github.io/git/ff7a41c7-6cbd-405f-9de5-0478d2be3693.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/git/cd7c75d2-f24c-41ea-a901-9b93f97b27d5.html" rel="prev" title="Git 基本操作">
+      <i class="fa fa-chevron-left"></i> Git 基本操作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/other/ea83f4ee-b0ba-4265-a4da-cca39fa63f0a.html" rel="next" title="设计模式">
+      设计模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Janvy Sun</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">370k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">12:51</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
